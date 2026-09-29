@@ -97,12 +97,17 @@ RedLink 把小红书的内容**完整搬到本地 Obsidian**：正文、图片�
 ```yaml
 ---
 id: "62ecde26000000001202abc"                  # 小红书笔记 ID
-title: "水电阶段一定要预埋的3根管"              # 笔记标题
+title: "这版 UI 改完，我终于理解了什么叫呼吸感"    # 笔记标题
 author: "某某设计师"                             # 作者昵称
 type: 收藏                                       # 来源：收藏 / 点赞 / 个人帖子
 syncTarget: bookmark                             # bookmark / like / post
 url: "https://www.xiaohongshu.com/explore/..."   # 原文链接（含 xsec_token）
-tags: ["装修", "水电"]                           # 小红书话题标签（内联数组）
+tags: ["UI设计", "版式", "设计灵感"]              # 小红书话题标签（内联数组）
+status: 有效                                     # 有效性标记
+source: xiaohongshu                              # 来源标识
+rag:
+  indexed: false                                 # 待索引标记
+  keywords: []                                   # 关键词位（供 AI 管线填充）
 createdAt: "2022-05-21T13:13:24.000Z"           # 发布时间（ISO 8601 带 Z）
 syncedAt: "2026-09-29 14:30:43"                 # 同步时间
 likes: 1234                                      # 点赞数
@@ -113,11 +118,25 @@ comments: 56                                     # 评论数
 可选字段（按需出现）：
 
 ```yaml
-aiTags: ["家装", "施工细节"]     # 仅启用「AI 打标签」时
-category: "家居装修"              # 仅启用「AI 分类」且归类成功时
+aiTags: ["界面设计", "配色参考"]   # 仅启用「AI 打标签」时
+category: "设计灵感"               # 仅启用「AI 分类」且归类成功时
 ```
 
 > 字段值统一经 `JSON.stringify` 转义 → 字符串**带双引号**，数组为**内联形式** `["a", "b"]`，避免标题含特殊字符时破坏 YAML。
+
+### 为 AI 检索预留的字段
+
+生成的 frontmatter 内置知识库友好字段，可直接接入 RAG / AI 检索管线：
+
+| 字段 | 默认值 | 含义 |
+|---|---|---|
+| `status` | `有效` | 有效性标记，便于筛选在用笔记 |
+| `source` | `xiaohongshu` | 来源标识，多源知识库可区分出处 |
+| `rag.indexed` | `false` | **待索引标记** —— 由你的索引管线改写为 `true` |
+| `rag.keywords` | `[]` | **关键词位** —— 由你的关键词提取脚本填充 |
+
+配合向量化 / 关键词提取脚本，即可搭出
+**「小红书收藏 → 自动索引 → AI 可检索」** 的完整链路。
 
 ### 正文格式
 
@@ -149,10 +168,25 @@ category: "家居装修"              # 仅启用「AI 分类」且归类成功�
 
 ## 安装
 
-### 手动安装
+> 仓库地址：**https://github.com/boaleiyt/redlink**
+> 下载页面：**https://github.com/boaleiyt/redlink/releases/latest**
 
-1. 下载 `main.js`、`manifest.json`、`styles.css`
-2. 放到 `<你的库>/.obsidian/plugins/redlink/` 目录下（**目录名必须是 `redlink`**）
+### 方式一：BRAT（推荐，支持自动更新）
+
+1. 在 Obsidian 中安装 **BRAT** 插件（[安装说明](https://github.com/TfTHacker/obsidian42-brat)）
+2. 打开 BRAT 设置 → **Add Beta plugin**
+3. 填入：`boaleiyt/redlink`
+4. 点 **Add Plugin** → 回到「第三方插件」启用 **RedLink**
+
+> BRAT 会自动跟踪本仓库的 Release，以后有新版本一键更新。
+
+### 方式二：手动安装
+
+1. 到 [Releases](https://github.com/boaleiyt/redlink/releases/latest) 下载三个文件：
+   - `main.js`
+   - `manifest.json`
+   - `styles.css`
+2. 放进 `<你的库>/.obsidian/plugins/redlink/`（**目录名必须是 `redlink`**）
 3. Obsidian → 设置 → 第三方插件 → 关闭安全模式 → 启用 **RedLink**
 
 ### 接口说明
@@ -216,3 +250,25 @@ A：需要你自己的 OpenAI 兼容接口。填入 Base URL、API Key、模型�
 ## 许可
 
 MIT License
+
+---
+
+## 支持这个项目
+
+RedLink 完全免费、开源，**没有任何付费墙、功能限制或额度限制**。所有功能都可以无偿使用。
+
+如果它确实帮到了你，愿意请我喝杯咖啡的话 —— 完全自愿，不影响任何功能：
+
+<p align="center">
+  <img src="docs/donate-wechat.jpg" alt="微信赞赏" width="200" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/donate-alipay.jpg" alt="支付宝" width="200" />
+</p>
+
+<p align="center"><sub>左：微信 &nbsp;|&nbsp; 右：支付宝</sub></p>
+
+也欢迎用这些**免费**的方式支持：
+
+- ⭐ 给仓库点个 Star
+- 🐛 遇到问题提 [Issue](https://github.com/boaleiyt/redlink/issues)
+- 📣 推荐给有同样需求的朋友
