@@ -178,7 +178,7 @@ category: "设计灵感"               # 仅启用「AI 分类」且归类成功
 3. 填入：`boaleiyt/redlink`
 4. 点 **Add Plugin** → 回到「第三方插件」启用 **RedLink**
 
-> BRAT 会自动跟踪本仓库的 Release，以后有新版本一键更新。
+> BRAT 会跟踪本仓库的 Release，新版本在 BRAT 里点一下即可更新。
 
 ### 方式二：手动安装
 
