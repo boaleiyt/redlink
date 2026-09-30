@@ -168,26 +168,58 @@ category: "设计灵感"               # 仅启用「AI 分类」且归类成功
 
 ## 安装
 
+RedLink 是**纯静态插件**（三个文件、零依赖），任何能托管文件的地方都能分发它。下面从**最简单的安装方式**排起。
+
 > 仓库地址：**https://github.com/boaleiyt/redlink**
 > 下载页面：**https://github.com/boaleiyt/redlink/releases/latest**
 
-### 方式一：BRAT（推荐，支持自动更新）
+### 方式一：官方插件市场（推荐，上架后可一键安装）
 
-1. 在 Obsidian 中安装 **BRAT** 插件（[安装说明](https://github.com/TfTHacker/obsidian42-brat)）
-2. 打开 BRAT 设置 → **Add Beta plugin**
-3. 填入：`boaleiyt/redlink`
-4. 点 **Add Plugin** → 回到「第三方插件」启用 **RedLink**
+正在申请 Obsidian 官方插件市场上架。**上架后**：Obsidian → 设置 → 第三方插件 → 浏览 → 搜索 `RedLink` → 安装。
 
-> BRAT 会跟踪本仓库的 Release，新版本在 BRAT 里点一下即可更新。
+**这是最终形态**：不需要 GitHub、不需要代理、不需要手动放文件。上架前请用下面的方式。
 
-### 方式二：手动安装
+### 方式二：手动安装（通用，不需要任何第三方插件）
 
-1. 到 [Releases](https://github.com/boaleiyt/redlink/releases/latest) 下载三个文件：
-   - `main.js`
-   - `manifest.json`
-   - `styles.css`
-2. 放进 `<你的库>/.obsidian/plugins/redlink/`（**目录名必须是 `redlink`**）
-3. Obsidian → 设置 → 第三方插件 → 关闭安全模式 → 启用 **RedLink**
+只需要三个文件。**三种下载途径任选其一**，哪个通就用哪个。
+
+**① 国内推荐 —— jsDelivr CDN**（点击即下载）
+
+- [manifest.json](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.0/manifest.json)
+- [main.js](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.0/main.js)
+- [styles.css](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.0/styles.css)
+
+**② 国内备选 —— GitHub 加速前缀**（三选一，把原链接接在前缀后）
+
+```
+https://ghproxy.net/https://github.com/boaleiyt/redlink/releases/download/1.5.0/main.js
+https://ghfast.top/https://github.com/boaleiyt/redlink/releases/download/1.5.0/main.js
+https://gh-proxy.com/https://github.com/boaleiyt/redlink/releases/download/1.5.0/main.js
+```
+
+（`manifest.json`、`styles.css` 同理，把最后的文件名换掉即可）
+
+**③ 官方 Release 页** —— 能直连 GitHub 的用户直接访问
+[github.com/boaleiyt/redlink/releases/latest](https://github.com/boaleiyt/redlink/releases/latest)
+
+**安装步骤：**
+
+1. 下载上面三个文件
+2. 放进 `<你的库>/.obsidian/plugins/redlink/`（**目录名必须是 `redlink`**，没有就新建）
+3. 重启 Obsidian → 设置 → 第三方插件 → 启用 **RedLink**
+
+> 💡 找不到 `.obsidian` 文件夹？macOS / Linux 下以 `.` 开头的是隐藏目录，按 `Ctrl/Cmd + Shift + .` 显示。
+
+### 方式三：git clone（开发者 / 能访问 GitHub 的用户）
+
+```bash
+cd <你的库>/.obsidian/plugins
+git clone https://github.com/boaleiyt/redlink.git redlink
+```
+
+更新时在该目录 `git pull` 即可。**注意：仓库里的 `manifest.json` 与 Release 版本保持一致，克隆后直接可用。**
+
+> 不推荐用 BRAT：它同样需要访问 `raw.githubusercontent.com`，且对 RedLink 这类三文件插件并无额外收益。能连 GitHub 的用户用上面方式三更直接，连不上的用户 BRAT 也用不了。
 
 ### 接口说明
 
