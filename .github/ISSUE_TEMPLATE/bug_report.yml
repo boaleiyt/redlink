@@ -1,0 +1,101 @@
+name: 🐛 Bug 反馈
+description: 报告一个可复现的问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请先搜索 [已有 Issue](https://github.com/boaleiyt/redlink/issues?q=is%3Aissue)，
+        避免重复。请尽量填写完整，信息越全越容易定位。
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: RedLink 版本
+      description: 设置 → 第三方插件 → RedLink 右侧显示的版本号，或 `manifest.json` 里的 `version`
+      placeholder: "例如 1.5.0"
+    validations:
+      required: true
+
+  - type: input
+    id: obsidian-version
+    attributes:
+      label: Obsidian 版本
+      description: 设置 → 关于 里可以看到
+      placeholder: "例如 1.7.7"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: 操作系统
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 一步一步写清楚，能稳定复现最重要
+      placeholder: |
+        1. 打开设置 → RedLink
+        2. 点击「立即同步」
+        3. 等到第 N 条时出现……
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+      placeholder: 应该发生什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      placeholder: 实际发生了什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志 / 报错信息
+      description: |
+        日志文件路径：`<你的家目录>/redlink-YYYY-MM-DD.log`
+        （Windows 为 `C:\Users\<用户名>\redlink-YYYY-MM-DD.log`）
+        注意：日志时间戳为 **UTC**，北京时间需 +8。
+        请把相关片段贴在这里（**贴前请删掉 Cookie、token 等隐私信息**）。
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图 / 录屏
+      description: 直接把图片拖进这个输入框即可
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 确认事项
+      options:
+        - label: 我已搜索过已有 Issue，确认不是重复问题
+          required: true
+        - label: 我已确认插件为最新版本
+          required: true
+        - label: 我贴出的日志已删除 Cookie / token 等敏感信息
+          required: true

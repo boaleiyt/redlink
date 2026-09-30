@@ -1,0 +1,59 @@
+name: 💡 功能建议
+description: 提出一个新功能或改进想法
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提建议前请先搜索 [已有 Issue](https://github.com/boaleiyt/redlink/issues?q=is%3Aissue)，
+        以及 [Discussions](https://github.com/boaleiyt/redlink/discussions) 里是否已经有人提过。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      description: 先说痛点，再说方案 —— 这样更容易讨论出更好的做法
+      placeholder: |
+        我经常需要……但现在只能……很不方便。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你的建议方案
+      description: 你希望它怎么工作？
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你试过的替代方案
+      description: 有没有别的工具/做法能达到类似效果？（可选）
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 功能类别
+      options:
+        - 同步能力（新的同步来源 / 更多字段）
+        - 媒体处理（图片 / 视频）
+        - 评论相关
+        - AI 能力（分类 / 打标签）
+        - 界面与交互
+        - 性能与稳定性
+        - 其他
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 确认事项
+      options:
+        - label: 我已搜索过已有 Issue 和 Discussions，确认不是重复建议
+          required: true
