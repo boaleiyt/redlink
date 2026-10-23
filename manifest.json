@@ -1,7 +1,7 @@
 {
   "id": "redlink",
   "name": "RedLink",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "免费开源的小红书同步插件。Sync Xiaohongshu bookmarks and notes into your vault, with images downloaded and frontmatter auto-generated.",
   "author": "laosaozi",
   "authorUrl": "https://github.com/boaleiyt/redlink",
