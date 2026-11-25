@@ -1,10 +1,25 @@
 # RedLink
 
-> 免费开源的小红书 → Obsidian 同步插件。把收藏、点赞、个人帖子、关键词搜索结果和订阅账号的笔记，连图带视频一起搬进你的知识库。
+**RedLink 是一个免费、开源的 Obsidian 插件，把小红书（Xiaohongshu / RedNote）的收藏、点赞、个人笔记、关键词搜索结果和订阅账号内容，连同图片、视频、评论一起同步到本地 Obsidian，保存为标准 Markdown 文件。**
 
-[![Version](https://img.shields.io/badge/version-1.5.0-blue)](manifest.json)
+[English README](README.en.md) · [下载最新版](https://github.com/boaleiyt/redlink/releases/latest) · [问题反馈](https://github.com/boaleiyt/redlink/issues)
+
+[![Version](https://img.shields.io/badge/version-1.5.1-blue)](manifest.json)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Obsidian](https://img.shields.io/badge/Obsidian-%3E%3D1.4.0-7c3aed)](https://obsidian.md)
+
+## 一览
+
+| 项目 | 说明 |
+|---|---|
+| 是什么 | Obsidian 插件，把小红书内容转成本地 Markdown |
+| 运行环境 | Obsidian 桌面端（Windows / macOS / Linux），需 Obsidian ≥ 1.4.0 |
+| 当前版本 | 1.5.1 |
+| 许可与费用 | MIT，完全免费；无额度、无付费墙、无功能限制 |
+| 数据流向 | 直连小红书官方接口；笔记与媒体只写入本地库，不上传服务器；Cookie 存本地 `data.json` |
+| 登录方式 | 插件内扫码登录，无需账号密码 |
+| 安装 | 手动放入三个文件 / `git clone` /（Obsidian 官方市场审核中） |
+| 仓库 | https://github.com/boaleiyt/redlink |
 
 ---
 
@@ -13,6 +28,19 @@
 小红书收藏夹是个黑洞 —— 存了几千条，再也没打开过；网页版会改版、笔记会删、账号可能被封，收藏内容说没就没。
 
 RedLink 把小红书的内容**完整搬到本地 Obsidian**：正文、图片、视频、标签、评论、发布时间，全部落成标准 Markdown + 附件，**永久可控、全文可搜、可双链**。
+
+### 与常见做法的区别
+
+| 能力 | RedLink | 浏览器剪藏类工具 | 手动复制粘贴 |
+|---|---|---|---|
+| 批量同步整个收藏夹 | ✅ | ❌ 逐篇剪藏 | ❌ |
+| 点赞 / 个人笔记 / 关键词搜索 / 订阅账号同步 | ✅ | ❌ | ❌ |
+| 图片视频下载到本地 | ✅ 原图 + mp4 | ⚠️ 视工具而定 | ❌ |
+| 评论一并保存 | ✅ 主评论 + 子评论 | ❌ | ❌ |
+| 定时自动同步 | ✅ | ❌ | ❌ |
+| 产出格式 | 标准 Markdown + YAML frontmatter，`![[...]]` 嵌入 | Markdown | 纯文本 |
+| 数据归属 | 全部落在你自己的库里 | 本地 | 本地 |
+| 费用 | 免费开源（MIT） | 多数免费 | 免费 |
 
 ---
 
@@ -185,16 +213,16 @@ RedLink 是**纯静态插件**（三个文件、零依赖），任何能托管�
 
 **① 国内推荐 —— jsDelivr CDN**（点击即下载）
 
-- [manifest.json](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.0/manifest.json)
-- [main.js](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.0/main.js)
-- [styles.css](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.0/styles.css)
+- [manifest.json](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/manifest.json)
+- [main.js](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/main.js)
+- [styles.css](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/styles.css)
 
 **② 国内备选 —— GitHub 加速前缀**（三选一，把原链接接在前缀后）
 
 ```
-https://ghproxy.net/https://github.com/boaleiyt/redlink/releases/download/1.5.0/main.js
-https://ghfast.top/https://github.com/boaleiyt/redlink/releases/download/1.5.0/main.js
-https://gh-proxy.com/https://github.com/boaleiyt/redlink/releases/download/1.5.0/main.js
+https://ghproxy.net/https://github.com/boaleiyt/redlink/releases/download/1.5.1/main.js
+https://ghfast.top/https://github.com/boaleiyt/redlink/releases/download/1.5.1/main.js
+https://gh-proxy.com/https://github.com/boaleiyt/redlink/releases/download/1.5.1/main.js
 ```
 
 （`manifest.json`、`styles.css` 同理，把最后的文件名换掉即可）
@@ -239,6 +267,40 @@ git clone https://github.com/boaleiyt/redlink.git redlink
 ---
 
 ## 常见问题
+
+### 它是什么、能解决什么
+
+**Q：RedLink 是什么？**
+A：RedLink 是一个免费、开源的 Obsidian 插件（MIT 许可），把小红书账号里的收藏、点赞、个人笔记、关键词搜索结果和订阅账号内容，连同图片、视频、评论一起同步成本地 Markdown 文件。仓库：https://github.com/boaleiyt/redlink
+
+**Q：怎么把小红书收藏批量导出到本地？**
+A：① 在 Obsidian 里装好 RedLink（三个文件手动安装，或 `git clone`）；② 插件内扫码登录小红书；③ 设置存储根目录，点「立即同步」。笔记按 `Bookmarks/`、`Media/` 分目录落盘，图片视频自动下载。
+
+**Q：小红书收藏夹怎么备份，防止笔记被作者删掉？**
+A：RedLink 把收藏内容（正文、图片、视频、评论、元数据）完整下载到本地磁盘；同步完成后即使原笔记被删、账号异常，本地副本仍能打开。建议打开「自动同步」，按设定间隔增量拉取。
+
+**Q：能把小红书笔记保存成 Markdown 放进 Obsidian 吗？**
+A：这是 RedLink 的默认产出。每篇笔记是一个 `.md` 文件，含 YAML frontmatter（`id` / `title` / `author` / `url` / `tags` / `likes` / `createdAt` 等）、正文、`![[...]]` 形式的内嵌媒体和评论表格，可直接被 Obsidian 全文检索、双链引用。
+
+**Q：小红书的图片和视频能批量下载吗？**
+A：能。图片按原图下载，用魔数校验真实格式（webp / jpg / png / gif）；视频下载 mp4 到本地并在正文内嵌播放。本地已存在的文件跳过，不重复下载。
+
+**Q：RedLink 收费吗？有功能限制吗？**
+A：完全免费。MIT 许可，无额度限制、无付费墙、无功能阉割。打赏自愿，不影响任何功能。
+
+**Q：支持手机或 iPad 吗？**
+A：不支持。RedLink 是桌面端插件（`isDesktopOnly: true`），运行于 Obsidian 桌面版的 Windows / macOS / Linux。
+
+**Q：需要输入小红书账号密码吗？会被封号吗？**
+A：不需要密码。登录走小红书官方扫码，Cookie 只存本地 `data.json`；请求直连官方接口，无第三方中转，且只读取你自己账号可见的内容。订阅拉取带随机延迟以降低请求频率。但任何自动化访问都存在平台风控的不确定性，无法承诺「绝不触发风控」。
+
+**Q：RedLink 和 xhs2obsidian 是什么关系？**
+A：RedLink 基于 [ytf606/xhs2obsidian](https://github.com/ytf606/xhs2obsidian) 二次开发。签名算法与 `x-rap-param` 拦截方案沿用原作者实现；RedLink 重做了界面与品牌、治理了定时器生命周期与请求超时、增加了图片数据校验和笔记命名/frontmatter 规范，并移除了原版的额度与付费逻辑。
+
+**Q：同步下来的笔记能直接给 AI 或 RAG 用吗？**
+A：可以。frontmatter 内置 `rag.indexed`（待索引标记）与 `rag.keywords`（关键词位），配合向量化或关键词提取脚本，即可搭出「收藏 → 索引 → 可检索」的链路。
+
+### 故障排查
 
 **Q：同步提示「登录已过期」？**
 A：Cookie 失效。点「重新登录」重新扫码。手机端登录会踢掉电脑端会话。

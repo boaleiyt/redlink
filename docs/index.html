@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RedLink — 把小红书笔记同步到 Obsidian 的开源插件</title>
+<meta name="description" content="RedLink 是免费开源的 Obsidian 插件，把小红书（Xiaohongshu / RedNote）的收藏、点赞、个人笔记、关键词搜索和订阅账号内容，连图片、视频、评论一起同步成本地 Markdown。MIT 许可，数据只存本地。">
+<link rel="canonical" href="https://boaleiyt.github.io/redlink/">
+<link rel="alternate" hreflang="en" href="https://boaleiyt.github.io/redlink/en.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RedLink — 把小红书笔记同步到 Obsidian 的开源插件">
+<meta property="og:description" content="免费开源（MIT）的 Obsidian 插件，把小红书收藏、点赞、笔记、搜索结果和订阅内容，连图片视频评论一起同步成本地 Markdown。">
+<meta property="og:url" content="https://boaleiyt.github.io/redlink/">
+<style>
+  :root{
+    --bg:#ffffff; --fg:#111111; --muted:#6b6b6b; --line:#e6e6e6;
+    --accent:#1a56db; --code-bg:#f7f7f7;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f0f0f; --fg:#f2f2f2; --muted:#9a9a9a; --line:#262626; --accent:#7aa2ff; --code-bg:#171717; }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7; font-size:16px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px}
+  header{border-bottom:1px solid var(--line)}
+  header .wrap{display:flex; align-items:center; justify-content:space-between; height:56px}
+  .brand{font-weight:600; letter-spacing:-.01em}
+  nav a{color:var(--muted); text-decoration:none; margin-left:20px; font-size:14px}
+  nav a:hover{color:var(--fg)}
+  h1{font-size:40px; line-height:1.25; letter-spacing:-.02em; margin:64px 0 20px; font-weight:650}
+  h2{font-size:20px; margin:56px 0 16px; letter-spacing:-.01em}
+  h3{font-size:16px; margin:28px 0 8px}
+  p{margin:0 0 16px}
+  .lead{font-size:18px; color:var(--fg)}
+  .lead strong{font-weight:600}
+  .muted{color:var(--muted)}
+  .btns{display:flex; gap:12px; flex-wrap:wrap; margin:28px 0 8px}
+  .btn{display:inline-block; padding:9px 18px; border:1px solid var(--fg); border-radius:6px;
+       text-decoration:none; color:var(--fg); font-size:14px}
+  .btn.primary{background:var(--fg); color:var(--bg)}
+  dl.facts{display:grid; grid-template-columns:120px 1fr; gap:0; margin:40px 0 0;
+           border-top:1px solid var(--line); font-size:14px}
+  dl.facts dt{color:var(--muted); padding:12px 0; border-bottom:1px solid var(--line)}
+  dl.facts dd{margin:0; padding:12px 0; border-bottom:1px solid var(--line)}
+  ul.plain{padding-left:18px; margin:0 0 16px}
+  ul.plain li{margin:6px 0}
+  pre{background:var(--code-bg); border:1px solid var(--line); border-radius:6px;
+      padding:14px 16px; overflow-x:auto; font-size:13px; line-height:1.6;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9em}
+  table{width:100%; border-collapse:collapse; font-size:14px; margin:0 0 16px}
+  th,td{text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--muted); font-weight:500}
+  details{border-bottom:1px solid var(--line); padding:14px 0}
+  summary{cursor:pointer; font-weight:500; list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"＋"; float:right; color:var(--muted)}
+  details[open] summary::after{content:"－"}
+  details p{margin:12px 0 0; color:var(--muted); font-size:15px}
+  a{color:var(--accent)}
+  footer{border-top:1px solid var(--line); margin-top:72px; padding:28px 0 56px;
+         font-size:13px; color:var(--muted)}
+  @media (max-width:600px){
+    h1{font-size:30px; margin-top:40px}
+    dl.facts{grid-template-columns:96px 1fr}
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "RedLink",
+  "alternateName": ["redlink", "RedLink for Obsidian"],
+  "description": "免费开源的 Obsidian 插件，把小红书（Xiaohongshu / RedNote）的收藏、点赞、个人笔记、关键词搜索结果和订阅账号内容，连图片、视频、评论一起同步成本地 Markdown 文件。",
+  "url": "https://boaleiyt.github.io/redlink/",
+  "codeRepository": "https://github.com/boaleiyt/redlink",
+  "downloadUrl": "https://github.com/boaleiyt/redlink/releases/latest",
+  "softwareVersion": "1.5.1",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "softwareRequirements": "Obsidian >= 1.4.0 (desktop)",
+  "inLanguage": ["zh-CN", "en"],
+  "isAccessibleForFree": true,
+  "license": "https://github.com/boaleiyt/redlink/blob/main/LICENSE",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "author": { "@type": "Person", "name": "laosaozi", "url": "https://github.com/boaleiyt" },
+  "sameAs": ["https://github.com/boaleiyt/redlink"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "RedLink 是什么？",
+      "acceptedAnswer": { "@type": "Answer", "text": "RedLink 是一个免费、开源的 Obsidian 插件（MIT 许可），把小红书账号里的收藏、点赞、个人笔记、关键词搜索结果和订阅账号内容，连同图片、视频、评论一起同步成本地 Markdown 文件。" }
+    },
+    {
+      "@type": "Question",
+      "name": "怎么把小红书收藏批量导出到本地？",
+      "acceptedAnswer": { "@type": "Answer", "text": "在 Obsidian 安装 RedLink，插件内扫码登录小红书，设置存储根目录后点「立即同步」。笔记按 Bookmarks/ 与 Media/ 分目录落盘，图片和视频自动下载。" }
+    },
+    {
+      "@type": "Question",
+      "name": "小红书收藏夹怎么备份，防止笔记被作者删掉？",
+      "acceptedAnswer": { "@type": "Answer", "text": "RedLink 把收藏的正文、图片、视频、评论和元数据完整下载到本地磁盘，同步完成后即使原笔记被删除或账号异常，本地副本仍可打开。开启自动同步可保持增量备份。" }
+    },
+    {
+      "@type": "Question",
+      "name": "RedLink 收费吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "完全免费。MIT 许可，无额度限制、无付费墙、无功能阉割。打赏自愿，不影响任何功能。" }
+    },
+    {
+      "@type": "Question",
+      "name": "RedLink 支持手机或 iPad 吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不支持。RedLink 是桌面端插件（isDesktopOnly 为 true），运行于 Obsidian 桌面版的 Windows、macOS 和 Linux。" }
+    },
+    {
+      "@type": "Question",
+      "name": "RedLink 和 xhs2obsidian 是什么关系？",
+      "acceptedAnswer": { "@type": "Answer", "text": "RedLink 基于 ytf606/xhs2obsidian 二次开发。签名算法与 x-rap-param 拦截方案沿用原作者实现，RedLink 重做了界面、治理了定时器生命周期、增加图片校验与笔记规范，并移除了原版的额度与付费逻辑。" }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="brand">RedLink</span>
+    <nav>
+      <a href="en.html">English</a>
+      <a href="https://github.com/boaleiyt/redlink">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>把小红书笔记，<br>搬进你自己的 Obsidian</h1>
+
+  <p class="lead"><strong>RedLink 是一个免费、开源的 Obsidian 插件</strong>，把小红书（Xiaohongshu / RedNote）的收藏、点赞、个人笔记、关键词搜索结果和订阅账号内容，连同图片、视频、评论一起同步到本地，保存为标准 Markdown 文件。</p>
+
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/boaleiyt/redlink/releases/latest">下载 1.5.1</a>
+    <a class="btn" href="https://github.com/boaleiyt/redlink">源码仓库</a>
+  </div>
+
+  <dl class="facts">
+    <dt>类型</dt><dd>Obsidian 桌面端插件</dd>
+    <dt>运行环境</dt><dd>Obsidian ≥ 1.4.0，Windows / macOS / Linux</dd>
+    <dt>许可</dt><dd>MIT，完全免费，无额度与付费墙</dd>
+    <dt>数据流向</dt><dd>直连小红书官方接口，只写入本地库，不上传服务器</dd>
+    <dt>登录</dt><dd>插件内扫码，无需账号密码</dd>
+    <dt>版本</dt><dd>1.5.1</dd>
+  </dl>
+
+  <h2>它解决什么问题</h2>
+  <p>收藏夹是个黑洞。存了几千条，再也没打开过；网页版会改版，笔记会被作者删掉，账号也可能异常。你以为存下来的东西，其实只是存了一个链接。</p>
+  <p>RedLink 把正文、图片、视频、标签、评论、发布时间全部落成本地文件 —— 永久可控、全文可搜、可双链。</p>
+
+  <h2>能做什么</h2>
+  <ul class="plain">
+    <li><strong>五类同步来源</strong>：收藏、点赞、个人帖子、关键词搜索结果、订阅账号</li>
+    <li><strong>完整抓取</strong>：正文、话题标签、@ 提及、全部原图、mp4 视频、主评论与子评论</li>
+    <li><strong>标准产出</strong>：Markdown + YAML frontmatter，媒体用 <code>![[...]]</code> 内嵌</li>
+    <li><strong>可选 AI 能力</strong>：自动分类、自动打标签、热点分析（自备 OpenAI 兼容接口）</li>
+    <li><strong>定时自动同步</strong>：登录失效自动停，不做无效请求</li>
+  </ul>
+
+  <h2>与常见做法的区别</h2>
+  <table>
+    <thead><tr><th>能力</th><th>RedLink</th><th>浏览器剪藏</th><th>手动复制</th></tr></thead>
+    <tbody>
+      <tr><td>批量同步整个收藏夹</td><td>✅</td><td>❌ 逐篇</td><td>❌</td></tr>
+      <tr><td>点赞 / 个人笔记 / 搜索 / 订阅</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>图片视频下载到本地</td><td>✅ 原图 + mp4</td><td>⚠️ 视工具</td><td>❌</td></tr>
+      <tr><td>评论一并保存</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>定时自动同步</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>费用</td><td>免费开源</td><td>多数免费</td><td>免费</td></tr>
+    </tbody>
+  </table>
+
+  <h2>安装</h2>
+  <p class="muted">三个文件，零依赖。把下面三个文件放进库里的 <code>.obsidian/plugins/redlink/</code>，重启 Obsidian 后启用即可。</p>
+<pre><code>manifest.json
+main.js
+styles.css
+
+# 目标目录（目录名必须是 redlink）
+&lt;你的库&gt;/.obsidian/plugins/redlink/</code></pre>
+  <p>下载地址：<a href="https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/manifest.json">manifest.json</a> ·
+     <a href="https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/main.js">main.js</a> ·
+     <a href="https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/styles.css">styles.css</a></p>
+  <p>也可以用 git 安装：</p>
+<pre><code>cd &lt;你的库&gt;/.obsidian/plugins
+git clone https://github.com/boaleiyt/redlink.git redlink</code></pre>
+
+  <h2>常见问题</h2>
+
+  <details open>
+    <summary>RedLink 是什么？</summary>
+    <p>免费开源的 Obsidian 插件（MIT），把小红书账号里的收藏、点赞、个人笔记、关键词搜索结果和订阅账号内容，连图片、视频、评论一起同步成本地 Markdown 文件。仓库：github.com/boaleiyt/redlink</p>
+  </details>
+
+  <details>
+    <summary>怎么把小红书收藏批量导出到本地？</summary>
+    <p>① 在 Obsidian 装好 RedLink；② 插件内扫码登录；③ 设置存储根目录，点「立即同步」。笔记按 Bookmarks/ 与 Media/ 分目录落盘，图片视频自动下载。</p>
+  </details>
+
+  <details>
+    <summary>收藏夹怎么备份，防止笔记被作者删掉？</summary>
+    <p>RedLink 把正文、图片、视频、评论、元数据完整下载到本地。同步完成后即使原笔记被删、账号异常，本地副本仍能打开。建议开启自动同步做增量备份。</p>
+  </details>
+
+  <details>
+    <summary>能把小红书笔记存成 Markdown 吗？</summary>
+    <p>这是默认产出。每篇笔记是一个 .md 文件，含 YAML frontmatter（id / title / author / url / tags / likes / createdAt 等）、正文、内嵌媒体和评论表格，可被 Obsidian 全文检索与双链引用。</p>
+  </details>
+
+  <details>
+    <summary>收费吗？有功能限制吗？</summary>
+    <p>完全免费。MIT 许可，无额度、无付费墙、无功能阉割。打赏自愿，不影响任何功能。</p>
+  </details>
+
+  <details>
+    <summary>支持手机或 iPad 吗？</summary>
+    <p>不支持。RedLink 是桌面端插件（isDesktopOnly 为 true），运行在 Obsidian 桌面版的 Windows、macOS、Linux 上。</p>
+  </details>
+
+  <details>
+    <summary>需要输入密码吗？会被封号吗？</summary>
+    <p>不需要密码，登录走小红书官方扫码，Cookie 只存本地 data.json，请求直连官方接口无中转。订阅拉取带随机延迟以降低请求频率；但任何自动化访问都存在平台风控的不确定性，无法承诺绝不触发。</p>
+  </details>
+
+  <details>
+    <summary>和 xhs2obsidian 是什么关系？</summary>
+    <p>RedLink 基于 ytf606/xhs2obsidian 二次开发，签名算法与 x-rap-param 拦截方案沿用原作者实现；RedLink 重做了界面与品牌、治理定时器生命周期、增加图片校验与笔记命名规范，并移除了原版的额度与付费逻辑。</p>
+  </details>
+</main>
+
+<footer>
+  <div class="wrap">
+    MIT License · <a href="https://github.com/boaleiyt/redlink">github.com/boaleiyt/redlink</a> · <a href="llms.txt">llms.txt</a>
+  </div>
+</footer>
+</body>
+</html>

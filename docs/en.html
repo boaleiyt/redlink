@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RedLink — Export Xiaohongshu (RedNote) bookmarks to Obsidian as Markdown</title>
+<meta name="description" content="RedLink is a free, open-source Obsidian plugin that exports Xiaohongshu (RedNote) bookmarks, likes, posts, keyword search results and subscribed creators into a local vault as Markdown, with images, videos and comments. MIT licensed. Your data stays local.">
+<link rel="canonical" href="https://boaleiyt.github.io/redlink/en.html">
+<link rel="alternate" hreflang="zh-CN" href="https://boaleiyt.github.io/redlink/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RedLink — Export Xiaohongshu bookmarks to Obsidian">
+<meta property="og:description" content="Free, open-source Obsidian plugin that syncs Xiaohongshu saves into local Markdown, including images, videos and comments.">
+<meta property="og:url" content="https://boaleiyt.github.io/redlink/en.html">
+<style>
+  :root{
+    --bg:#ffffff; --fg:#111111; --muted:#6b6b6b; --line:#e6e6e6;
+    --accent:#1a56db; --code-bg:#f7f7f7;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f0f0f; --fg:#f2f2f2; --muted:#9a9a9a; --line:#262626; --accent:#7aa2ff; --code-bg:#171717; }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    line-height:1.7; font-size:16px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px}
+  header{border-bottom:1px solid var(--line)}
+  header .wrap{display:flex; align-items:center; justify-content:space-between; height:56px}
+  .brand{font-weight:600; letter-spacing:-.01em}
+  nav a{color:var(--muted); text-decoration:none; margin-left:20px; font-size:14px}
+  nav a:hover{color:var(--fg)}
+  h1{font-size:40px; line-height:1.25; letter-spacing:-.02em; margin:64px 0 20px; font-weight:650}
+  h2{font-size:20px; margin:56px 0 16px; letter-spacing:-.01em}
+  p{margin:0 0 16px}
+  .lead{font-size:18px}
+  .muted{color:var(--muted)}
+  .btns{display:flex; gap:12px; flex-wrap:wrap; margin:28px 0 8px}
+  .btn{display:inline-block; padding:9px 18px; border:1px solid var(--fg); border-radius:6px;
+       text-decoration:none; color:var(--fg); font-size:14px}
+  .btn.primary{background:var(--fg); color:var(--bg)}
+  dl.facts{display:grid; grid-template-columns:140px 1fr; gap:0; margin:40px 0 0;
+           border-top:1px solid var(--line); font-size:14px}
+  dl.facts dt{color:var(--muted); padding:12px 0; border-bottom:1px solid var(--line)}
+  dl.facts dd{margin:0; padding:12px 0; border-bottom:1px solid var(--line)}
+  ul.plain{padding-left:18px; margin:0 0 16px}
+  ul.plain li{margin:6px 0}
+  pre{background:var(--code-bg); border:1px solid var(--line); border-radius:6px;
+      padding:14px 16px; overflow-x:auto; font-size:13px; line-height:1.6;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9em}
+  table{width:100%; border-collapse:collapse; font-size:14px; margin:0 0 16px}
+  th,td{text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--muted); font-weight:500}
+  details{border-bottom:1px solid var(--line); padding:14px 0}
+  summary{cursor:pointer; font-weight:500; list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+"; float:right; color:var(--muted)}
+  details[open] summary::after{content:"−"}
+  details p{margin:12px 0 0; color:var(--muted); font-size:15px}
+  a{color:var(--accent)}
+  footer{border-top:1px solid var(--line); margin-top:72px; padding:28px 0 56px;
+         font-size:13px; color:var(--muted)}
+  @media (max-width:600px){
+    h1{font-size:30px; margin-top:40px}
+    dl.facts{grid-template-columns:110px 1fr}
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "RedLink",
+  "alternateName": ["redlink", "RedLink for Obsidian", "Xiaohongshu to Obsidian exporter"],
+  "description": "RedLink is a free, open-source Obsidian plugin that exports Xiaohongshu (RedNote) bookmarks, likes, posts, keyword search results and subscribed creators into a local vault as Markdown, including images, videos and comments.",
+  "url": "https://boaleiyt.github.io/redlink/en.html",
+  "codeRepository": "https://github.com/boaleiyt/redlink",
+  "downloadUrl": "https://github.com/boaleiyt/redlink/releases/latest",
+  "softwareVersion": "1.5.1",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "softwareRequirements": "Obsidian >= 1.4.0 (desktop)",
+  "inLanguage": ["en", "zh-CN"],
+  "isAccessibleForFree": true,
+  "license": "https://github.com/boaleiyt/redlink/blob/main/LICENSE",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "laosaozi", "url": "https://github.com/boaleiyt" },
+  "sameAs": ["https://github.com/boaleiyt/redlink"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is RedLink?",
+      "acceptedAnswer": { "@type": "Answer", "text": "RedLink is a free, open-source Obsidian plugin (MIT) that syncs Xiaohongshu (RedNote) bookmarks, likes, your own posts, keyword search results and subscribed creators into a local vault as Markdown, including images, videos and comments." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I export my Xiaohongshu bookmarks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Install RedLink in Obsidian, scan the QR code to log in, choose a root folder, and press Sync. Notes are written under Bookmarks/ and media under Media/, one Markdown file per note." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I back up saved Xiaohongshu posts before the author deletes them?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. RedLink downloads the full body text, images, videos, comments and metadata to your disk, so the local copy survives deletion of the original post. Auto-sync keeps the backup incremental." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is RedLink free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. MIT licensed, with no quotas, no paywall and no crippled tier. Donations are optional and unlock nothing." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does RedLink work on mobile or iPad?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. It is a desktop-only plugin (isDesktopOnly is true) for Obsidian on Windows, macOS and Linux." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is RedLink different from xhs2obsidian?",
+      "acceptedAnswer": { "@type": "Answer", "text": "RedLink is a fork of ytf606/xhs2obsidian. The signing algorithm and request interception come from the original author; RedLink rebuilt the UI, fixed timer lifecycle and timeouts, added image integrity checks and standardised note naming, and removed the original quota and payment logic." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="brand">RedLink</span>
+    <nav>
+      <a href="./">中文</a>
+      <a href="https://github.com/boaleiyt/redlink">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Get your Xiaohongshu saves<br>out of the app, into your vault</h1>
+
+  <p class="lead"><strong>RedLink is a free, open-source Obsidian plugin</strong> that exports Xiaohongshu (小红书 / RedNote) bookmarks, likes, your own posts, keyword search results and subscribed creators into a local Obsidian vault as standard Markdown — with images, videos and comments downloaded alongside.</p>
+
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/boaleiyt/redlink/releases/latest">Download 1.5.1</a>
+    <a class="btn" href="https://github.com/boaleiyt/redlink">Source</a>
+  </div>
+
+  <dl class="facts">
+    <dt>Type</dt><dd>Obsidian desktop plugin</dd>
+    <dt>Runs on</dt><dd>Obsidian ≥ 1.4.0 — Windows, macOS, Linux</dd>
+    <dt>License</dt><dd>MIT, free with no quotas or paywall</dd>
+    <dt>Data flow</dt><dd>Calls Xiaohongshu's official API directly; writes only to your local vault</dd>
+    <dt>Login</dt><dd>QR code inside the plugin — no password</dd>
+    <dt>Version</dt><dd>1.5.1</dd>
+  </dl>
+
+  <h2>Why it exists</h2>
+  <p>A bookmark folder is where saved posts go to die. You save thousands of notes and never open them again; the web version changes, authors delete posts, accounts get restricted. What you thought you had saved was only a link.</p>
+  <p>RedLink writes the body text, images, videos, tags, comments and timestamps to your own disk as Markdown — permanent, searchable, linkable.</p>
+
+  <h2>What it does</h2>
+  <ul class="plain">
+    <li><strong>Five sync sources</strong>: bookmarks, likes, own posts, keyword search results, subscribed creators</li>
+    <li><strong>Complete capture</strong>: body text, hashtags, @ mentions, original images, mp4 videos, top-level and nested comments</li>
+    <li><strong>Standard output</strong>: Markdown with YAML frontmatter, media embedded via <code>![[...]]</code></li>
+    <li><strong>Optional AI</strong>: auto-categorisation, auto-tagging, topic reports (bring your own OpenAI-compatible API)</li>
+    <li><strong>Scheduled sync</strong>: stops automatically when the login expires</li>
+  </ul>
+
+  <h2>How it compares</h2>
+  <table>
+    <thead><tr><th>Capability</th><th>RedLink</th><th>Browser clipper</th><th>Manual copy</th></tr></thead>
+    <tbody>
+      <tr><td>Sync an entire bookmark folder</td><td>✅</td><td>❌ one at a time</td><td>❌</td></tr>
+      <tr><td>Likes / own posts / search / subscriptions</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>Download images and videos locally</td><td>✅ originals + mp4</td><td>⚠️ depends</td><td>❌</td></tr>
+      <tr><td>Save comments</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>Scheduled sync</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>Cost</td><td>Free, open source</td><td>Usually free</td><td>Free</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Install</h2>
+  <p class="muted">Three static files, no dependencies. Put them in <code>.obsidian/plugins/redlink/</code> inside your vault, restart Obsidian, then enable RedLink.</p>
+<pre><code>manifest.json
+main.js
+styles.css
+
+# target directory (the folder name must be "redlink")
+&lt;your vault&gt;/.obsidian/plugins/redlink/</code></pre>
+  <p>Direct downloads: <a href="https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/manifest.json">manifest.json</a> ·
+     <a href="https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/main.js">main.js</a> ·
+     <a href="https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/styles.css">styles.css</a></p>
+  <p>Or clone the repository:</p>
+<pre><code>cd &lt;your vault&gt;/.obsidian/plugins
+git clone https://github.com/boaleiyt/redlink.git redlink</code></pre>
+
+  <h2>FAQ</h2>
+
+  <details open>
+    <summary>What is RedLink?</summary>
+    <p>A free, open-source (MIT) Obsidian plugin that syncs Xiaohongshu bookmarks, likes, posts, keyword search results and subscribed creators into a local vault as Markdown, including images, videos and comments.</p>
+  </details>
+
+  <details>
+    <summary>How do I export my Xiaohongshu bookmarks?</summary>
+    <p>Install RedLink in Obsidian, scan the QR code to log in, pick a root folder, and press Sync. Notes land under Bookmarks/, media under Media/.</p>
+  </details>
+
+  <details>
+    <summary>Can I back up saved posts before the author deletes them?</summary>
+    <p>Yes — that is the main use case. Everything is downloaded to your disk, so the local copy survives deletion of the original or changes to your account. Auto-sync keeps it incremental.</p>
+  </details>
+
+  <details>
+    <summary>Does it save posts as Markdown I can use in Obsidian?</summary>
+    <p>Yes. Each note is a .md file with YAML frontmatter, body text, embedded media and a comments table, fully searchable and linkable inside Obsidian.</p>
+  </details>
+
+  <details>
+    <summary>Is RedLink free?</summary>
+    <p>Yes. MIT licensed, no quotas, no paywall, no crippled tier. Donations are optional and unlock nothing.</p>
+  </details>
+
+  <details>
+    <summary>Does it work on mobile or iPad?</summary>
+    <p>No. It is a desktop-only plugin (isDesktopOnly is true) for Obsidian on Windows, macOS and Linux.</p>
+  </details>
+
+  <details>
+    <summary>Do I have to give it my Xiaohongshu password?</summary>
+    <p>No. Login uses the official QR flow; the cookie is stored locally in data.json. Requests go directly to Xiaohongshu with no third-party relay, and only content visible to your own account is read. Subscription pulls use randomised delays, but no automation can guarantee it never trips risk controls.</p>
+  </details>
+
+  <details>
+    <summary>How is this different from xhs2obsidian?</summary>
+    <p>RedLink is a fork of ytf606/xhs2obsidian. The signing and request-interception logic comes from the original author; RedLink rebuilt the UI, fixed timer lifecycle and timeouts, added image integrity checks and standardised note naming, and removed the quota and payment logic.</p>
+  </details>
+</main>
+
+<footer>
+  <div class="wrap">
+    MIT License · <a href="https://github.com/boaleiyt/redlink">github.com/boaleiyt/redlink</a> · <a href="llms.txt">llms.txt</a>
+  </div>
+</footer>
+</body>
+</html>

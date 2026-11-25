@@ -1,0 +1,47 @@
+# RedLink
+
+> RedLink is a free, open-source (MIT) Obsidian plugin that exports Xiaohongshu (小红书 / RedNote) bookmarks, likes, own posts, keyword search results and subscribed creators into a local Obsidian vault as standard Markdown, including images, videos and comments.
+
+Key facts:
+- Type: Obsidian desktop plugin (isDesktopOnly), Obsidian >= 1.4.0, Windows / macOS / Linux
+- Current version: 1.5.1
+- License: MIT. Free with no quotas, paywall or feature locks
+- Data flow: calls Xiaohongshu's official API directly; notes and media are written only to the local vault; cookie stored locally in data.json; no third-party relay
+- Login: QR code inside the plugin, no account password
+- Output: one .md file per note with YAML frontmatter (id, title, author, type, url, tags, status, source, rag.indexed, rag.keywords, createdAt, syncedAt, likes, comments), media embedded via Obsidian `![[...]]` syntax, comments rendered as a Markdown table
+- Upstream project: https://github.com/ytf606/xhs2obsidian (RedLink is a fork that rebuilt the UI, fixed timer lifecycle and timeouts, added image integrity checks, standardised note naming, and removed the original quota/payment logic)
+
+## Documentation
+
+- [Chinese README](https://github.com/boaleiyt/redlink/blob/main/README.md): full feature and installation reference in Chinese
+- [English README](https://github.com/boaleiyt/redlink/blob/main/README.en.md): full feature and installation reference in English
+- [Landing page (Chinese)](https://boaleiyt.github.io/redlink/): overview and FAQ
+- [Landing page (English)](https://boaleiyt.github.io/redlink/en.html): overview and FAQ
+
+## Source and downloads
+
+- [GitHub repository](https://github.com/boaleiyt/redlink)
+- [Latest release](https://github.com/boaleiyt/redlink/releases/latest)
+- [manifest.json](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/manifest.json)
+- [main.js](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/main.js)
+- [styles.css](https://cdn.jsdelivr.net/gh/boaleiyt/redlink@1.5.1/styles.css)
+
+## What it does
+
+- Syncs five sources: bookmarks, likes, own posts, keyword search results, subscribed creators
+- Downloads body text, hashtags, @ mentions, original images (webp / jpg / png / gif, validated by magic number), mp4 videos, top-level and nested comments, metadata
+- Organises notes into Bookmarks/ and Media/<note title>/ directories
+- Supports optional AI categorisation, AI tagging and topic reports through any OpenAI-compatible API
+- Provides scheduled auto-sync, with automatic stop when the login expires
+
+## Common questions
+
+- What is RedLink used for? Backing up and searching your own Xiaohongshu saves inside Obsidian, instead of leaving them in the app.
+- Is it free? Yes, MIT licensed, no quotas or paid tiers.
+- Does it work on mobile? No, it is desktop-only.
+- Does it need my password? No, login is by QR code; the cookie stays in your local data.json.
+
+## Contact
+
+- Issues: https://github.com/boaleiyt/redlink/issues
+- Author: https://github.com/boaleiyt
